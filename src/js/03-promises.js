@@ -22,6 +22,11 @@ function onSubmit(evt) {
   evt.preventDefault();
   const { delay, step, amount } = evt.currentTarget.elements;
 
+  const submitBtn = evt.currentTarget.querySelector('button[type="submit"]');
+
+  // Заблокувати кнопку
+  submitBtn.disabled = true;
+
   for (let i = 0, position = 1; i < amount.value; i += 1, position += 1) {
     const delayAll = Number(delay.value) + step.value * i;
 
@@ -35,6 +40,11 @@ function onSubmit(evt) {
         Notiflix.Notify.failure(
           `❌ Rejected promise ${position} in ${delay}ms`
         );
+      })
+    .finally(() => {
+        if (i === amount.value - 1) {
+          submitBtn.disabled = false;
+        }
       });
   }
 }
